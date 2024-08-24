@@ -21,6 +21,8 @@ PageType {
     property bool isTabBarDisabled: false
 
     Connections {
+        objectName: "pageControllerConnection"
+
         target: PageController
 
         function onGoToPageHome() {
@@ -103,6 +105,8 @@ PageType {
     }
 
     Connections {
+        objectName: "installControllerConnections"
+
         target: InstallController
 
         function onInstallationErrorOccurred(error) {
@@ -161,6 +165,8 @@ PageType {
     }
 
     Connections {
+        objectName: "connectionControllerConnections"
+
         target: ConnectionController
 
         function onReconnectWithUpdatedContainer(message) {
@@ -178,6 +184,8 @@ PageType {
     }
 
     Connections {
+        objectName: "importControllerConnections"
+
         target: ImportController
 
         function onImportErrorOccurred(error, goToPageHome) {
@@ -192,6 +200,8 @@ PageType {
     }
 
     Connections {
+        objectName: "settingsControllerConnections"
+
         target: SettingsController
 
         function onLoggingDisableByWatcher() {
@@ -206,6 +216,7 @@ PageType {
 
     StackViewType {
         id: tabBarStackView
+        objectName: "tabBarStackView"
 
         anchors.top: parent.top
         anchors.right: parent.right
@@ -242,6 +253,7 @@ PageType {
 
     TabBar {
         id: tabBar
+        objectName: "tabBar"
 
         anchors.right: parent.right
         anchors.left: parent.left
@@ -257,6 +269,8 @@ PageType {
         enabled: !root.isControlsDisabled && !root.isTabBarDisabled
 
         background: Shape {
+            objectName: "backgroundShape"
+
             width: parent.width
             height: parent.height
 
@@ -277,6 +291,8 @@ PageType {
 
         TabImageButtonType {
             id: homeTabButton
+            objectName: "homeTabButton"
+
             isSelected: tabBar.currentIndex === 0
             image: "qrc:/images/controls/home.svg"
             clickedFunc: function () {
@@ -292,6 +308,7 @@ PageType {
 
         TabImageButtonType {
             id: shareTabButton
+            objectName: "shareTabButton"
 
             Connections {
                 target: ServersModel
@@ -318,6 +335,8 @@ PageType {
 
         TabImageButtonType {
             id: settingsTabButton
+            objectName: "settingsTabButton"
+
             isSelected: tabBar.currentIndex === 2
             image: "qrc:/images/controls/settings-2.svg"
             clickedFunc: function () {
@@ -330,6 +349,8 @@ PageType {
 
         TabImageButtonType {
             id: plusTabButton
+            objectName: "plusTabButton"
+
             isSelected: tabBar.currentIndex === 3
             image: "qrc:/images/controls/plus.svg"
             clickedFunc: function () {

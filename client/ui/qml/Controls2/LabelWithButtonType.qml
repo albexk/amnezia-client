@@ -8,7 +8,7 @@ import "TextTypes"
 
 Item {
     id: root
-
+    property bool focusable: true
     property string text
     property int textMaximumLineCount: 2
     property int textElide: Qt.ElideRight

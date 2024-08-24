@@ -13,6 +13,7 @@ TabButton {
     property string image
 
     property bool isSelected: false
+    property bool focusable: true
 
     property string borderFocusedColor: AmneziaStyle.color.paleGray
     property int borderFocusedWidth: 1
@@ -20,7 +21,7 @@ TabButton {
     property var clickedFunc
 
     hoverEnabled: true
-    focusPolicy: Qt.TabFocus
+    // focusPolicy: Qt.TabFocus
 
     icon.source: image
     icon.color: isSelected ? selectedColor : defaultColor

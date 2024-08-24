@@ -15,6 +15,8 @@ Button {
     property string progressButtonColor: AmneziaStyle.color.paleGray
     property string connectedButtonColor: AmneziaStyle.color.goldenApricot
 
+    property bool focusable: true
+
     implicitWidth: 190
     implicitHeight: 190
 
@@ -157,6 +159,8 @@ Button {
     onClicked: {
         ServersModel.setProcessedServerIndex(ServersModel.defaultIndex)
         ConnectionController.connectButtonClicked()
+        console.log("===>> Enter is pressed")
+        FocusController.reload()
     }
 
     Keys.onEnterPressed: this.clicked()

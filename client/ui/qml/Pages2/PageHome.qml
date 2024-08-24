@@ -94,6 +94,7 @@ PageType {
             BasicButtonType {
                 id: splitTunnelingButton
                 objectName: "splitTunnelingButton"
+                property bool focusable: true
 
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                 Layout.bottomMargin: 34

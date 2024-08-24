@@ -15,28 +15,28 @@ public:
     explicit FocusController(QQmlApplicationEngine* engine, QObject *parent = nullptr);
     ~FocusController();
 
-    QQuickItem* nextKeyTabItem();
-    QQuickItem* previousKeyTabItem();
-    QQuickItem* nextKeyUpItem();
-    QQuickItem* nextKeyDownItem();
-    QQuickItem* nextKeyLeftItem();
-    QQuickItem* nextKeyRightItem();
-    QQuickItem* currentItem() const;
+    QObject* nextKeyTabItem();
+    QObject* previousKeyTabItem();
+    QObject* nextKeyUpItem();
+    QObject* nextKeyDownItem();
+    QObject* nextKeyLeftItem();
+    QObject* nextKeyRightItem();
+    QObject* currentItem() const;
 
 signals:
-    void nextTabItemChanged(QQuickItem* item);
-    void previousTabItemChanged(QQuickItem* item);
-    void nextKeyUpItemChanged(QQuickItem* item);
-    void nextKeyDownItemChanged(QQuickItem* item);
-    void nextKeyLeftItemChanged(QQuickItem* item);
-    void nextKeyRightItemChanged(QQuickItem* item);
+    void nextTabItemChanged(QObject* item);
+    void previousTabItemChanged(QObject* item);
+    void nextKeyUpItemChanged(QObject* item);
+    void nextKeyDownItemChanged(QObject* item);
+    void nextKeyLeftItemChanged(QObject* item);
+    void nextKeyRightItemChanged(QObject* item);
 
 public slots:
     void reload();
 
 private:
     QQmlApplicationEngine* m_engine;
-    QList<QQuickItem*> m_focus_chain;
+    QList<QObject*> m_focus_chain;
     qsizetype m_current_index;
 };
 

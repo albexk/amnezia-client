@@ -15,10 +15,18 @@ import "../Components"
 PageType {
     id: root
 
-    defaultActiveFocusItem: homeTabButton
+    defaultActiveFocusItem: null // homeTabButton
 
     property bool isControlsDisabled: false
     property bool isTabBarDisabled: false
+    property Item focusedItem: null
+
+    Component.onCompleted: {
+        console.log("############ pageStart completed")
+        FocusController.reload()
+        focusedItem = FocusController.currentFocusedItem()
+        console.log("-> ", focusedItem)
+    }
 
     Connections {
         objectName: "pageControllerConnection"
@@ -93,15 +101,15 @@ PageType {
             }
         }
 
-        function onForceTabBarActiveFocus() {
-            homeTabButton.focus = true
-            tabBar.forceActiveFocus()
-        }
+        // function onForceTabBarActiveFocus() {
+        //     homeTabButton.focus = true
+        //     tabBar.forceActiveFocus()
+        // }
 
-        function onForceStackActiveFocus() {
-            homeTabButton.focus = true
-            tabBarStackView.forceActiveFocus()
-        }
+        // function onForceStackActiveFocus() {
+        //     homeTabButton.focus = true
+        //     tabBarStackView.forceActiveFocus()
+        // }
     }
 
     Connections {
@@ -301,7 +309,7 @@ PageType {
                 tabBar.currentIndex = 0
             }
 
-            KeyNavigation.tab: shareTabButton
+            // KeyNavigation.tab: shareTabButton
             Keys.onEnterPressed: this.clicked()
             Keys.onReturnPressed: this.clicked()
         }
@@ -330,7 +338,7 @@ PageType {
                 tabBar.currentIndex = 1
             }
 
-            KeyNavigation.tab: settingsTabButton
+            // KeyNavigation.tab: settingsTabButton
         }
 
         TabImageButtonType {
@@ -344,7 +352,7 @@ PageType {
                 tabBar.currentIndex = 2
             }
 
-            KeyNavigation.tab: plusTabButton
+            // KeyNavigation.tab: plusTabButton
         }
 
         TabImageButtonType {
@@ -358,7 +366,7 @@ PageType {
                 tabBar.currentIndex = 3
             }
 
-            Keys.onTabPressed: PageController.forceStackActiveFocus()
+            // Keys.onTabPressed: PageController.forceStackActiveFocus()
         }
     }
 }

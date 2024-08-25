@@ -21,7 +21,7 @@ public:
     QObject* nextKeyDownItem();
     QObject* nextKeyLeftItem();
     QObject* nextKeyRightItem();
-    QObject* currentItem() const;
+    Q_INVOKABLE QQuickItem* currentFocusedItem() const;
 
 signals:
     void nextTabItemChanged(QObject* item);

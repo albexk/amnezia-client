@@ -1,7 +1,7 @@
 #include "focusController.h"
 #include <QQmlContext>
 #include <algorithm>
-#include <QWindow>
+#include <QQuickWindow>
 
 
 const QList<QObject*> getChildren(QObject* obj) {
@@ -21,6 +21,12 @@ bool isVisible(QObject* item)
 bool isFocusable(QObject* item)
 {
     return item->property("focusable").toBool();
+}
+
+QRectF getCoordsOnScene(QQuickItem* item)
+{
+    if (!item) return {};
+    return item->mapRectToScene(item->childrenRect());
 }
 
 QPointF getCenterPointOnScene(QQuickItem* item)
@@ -43,13 +49,18 @@ bool isZeroCoords(QObject& item)
         return true;
 }
 
-// bool isOutsideTheScene(QQuickItem* item)
-// {
-//     const auto itemRect = item->childrenRect();
-//     const auto win = item->window();
-//     const auto rootItemRect = win-> // contentItem()->childrenRect();
-//     return rootItemRect->intersects(itemRect);
-// }
+bool isOnTheScene(QQuickItem* item)
+{
+    if (!item) {
+        return false;
+    }
+    QRectF itemRect = item->mapRectToScene(item->childrenRect());
+    QQuickWindow* window = item->window();
+    QRectF windowRect = window->contentItem()->childrenRect();
+    const auto res = windowRect.contains(itemRect);
+    qDebug() << "itemRect: " << itemRect << "; windowRect: " << windowRect;
+    return res;
+}
 
 template<typename T>
 void printItems(const T& items)
@@ -57,7 +68,7 @@ void printItems(const T& items)
     for(const auto& item : items) {
         QQuickItem* i = qobject_cast<QQuickItem*>(item);
         QPointF coords {getCenterPointOnScene(i)};
-        qDebug() << "=> Item: " << i << "; coords: " << coords;
+        qDebug() << "=> Item: " << i/* << "; coords: " << coords << ">>> "*/ << getCoordsOnScene(i);
     }
 }
 
@@ -70,7 +81,7 @@ QList<QObject*> getChain(QObject* item)
     }
     const auto children = item->children();
     for(const auto child : children) {
-        if (child && isFocusable(child) && qobject_cast<QQuickItem*>(child)) {
+        if (child && isFocusable(child) && qobject_cast<QQuickItem*>(child) && isOnTheScene(qobject_cast<QQuickItem*>(child))) {
             res.append(child);
         }
         res.append(getChain(child));
@@ -83,15 +94,18 @@ FocusController::FocusController(QQmlApplicationEngine* engine, QObject *parent)
     , m_focus_chain{}
     , m_current_index{0}
 {
+    qDebug() << "FocusController ctor" << "triggered";
 }
 
 FocusController::~FocusController()
 {
-
+    qDebug() << "FocusController dtor" << "triggered";
 }
 
 QObject *FocusController::nextKeyTabItem()
 {
+    qDebug() << "nextKeyTabItem" << "triggered";
+
     if (m_focus_chain.empty()) return {};
     if (m_current_index == (m_focus_chain.size() - 1)) {
         m_current_index = 0;
@@ -103,6 +117,8 @@ QObject *FocusController::nextKeyTabItem()
 
 QObject *FocusController::previousKeyTabItem()
 {
+    qDebug() << "previousKeyTabItem" << "triggered";
+
     if (m_focus_chain.empty()) return {};
     if (m_current_index == 0) {
         m_current_index = m_focus_chain.size() - 1;
@@ -114,32 +130,45 @@ QObject *FocusController::previousKeyTabItem()
 
 QObject *FocusController::nextKeyUpItem()
 {
+    qDebug() << "nextKeyUpItem" << "triggered";
+
     return {};
 }
 
 QObject *FocusController::nextKeyDownItem()
 {
+    qDebug() << "nextKeyDownItem" << "triggered";
+
     return {};
 }
 
 QObject *FocusController::nextKeyLeftItem()
 {
+    qDebug() << "nextKeyLeftItem" << "triggered";
+
     return {};
 }
 
 QObject *FocusController::nextKeyRightItem()
 {
+    qDebug() << "nextKeyRightItem" << "triggered";
+
     return {};
 }
 
-QObject* FocusController::currentItem() const
+QQuickItem* FocusController::currentFocusedItem() const
 {
+    qDebug() << "currentFocusedItem" << "triggered";
+
     if(m_focus_chain.empty()) return {};
-    return m_focus_chain.at(m_current_index);
+    qDebug() << "-> " << m_focus_chain;
+    return qobject_cast<QQuickItem*>(m_focus_chain.at(m_current_index));
 }
 
 void FocusController::reload()
 {
+    qDebug() << "reload" << "triggered";
+
     m_current_index = 0;
     m_focus_chain.clear();
 

@@ -21,6 +21,11 @@ PageType {
 
     defaultActiveFocusItem: focusItem
 
+
+    Component.onCompleted: {
+        console.log("############ pageHome completed")
+    }
+
     Connections {
         objectName: "pageControllerConnections"
 

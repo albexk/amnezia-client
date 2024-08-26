@@ -15,13 +15,14 @@ public:
     explicit FocusController(QQmlApplicationEngine* engine, QObject *parent = nullptr);
     ~FocusController();
 
-    QObject* nextKeyTabItem();
+    Q_INVOKABLE QObject* nextKeyTabItem();
     QObject* previousKeyTabItem();
     QObject* nextKeyUpItem();
     QObject* nextKeyDownItem();
     QObject* nextKeyLeftItem();
     QObject* nextKeyRightItem();
     Q_INVOKABLE QQuickItem* currentFocusedItem() const;
+    // qsizetype indexOfFocusedItem(const QObject& item) const;
 
 signals:
     void nextTabItemChanged(QObject* item);
@@ -37,6 +38,7 @@ public slots:
 private:
     QQmlApplicationEngine* m_engine;
     QList<QObject*> m_focus_chain;
+    QObject* m_current_focused_item;
     qsizetype m_current_index;
 };
 

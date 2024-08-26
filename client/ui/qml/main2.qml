@@ -34,10 +34,6 @@ Window  {
         console.log("############ mainWindow completed")
     }
 
-    Component.onActiveChanged: {
-        console.log(">>>>>><<<<<< ", isActive)
-    }
-
     title: "AmneziaVPN"
 
     Connections {

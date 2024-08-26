@@ -92,7 +92,8 @@ QList<QObject*> getChain(QObject* item)
 FocusController::FocusController(QQmlApplicationEngine* engine, QObject *parent)
     : m_engine{engine}
     , m_focus_chain{}
-    , m_current_index{0}
+    , m_current_focused_item{nullptr}
+    , m_current_index{-1}
 {
     qDebug() << "FocusController ctor" << "triggered";
 }
@@ -106,7 +107,11 @@ QObject *FocusController::nextKeyTabItem()
 {
     qDebug() << "nextKeyTabItem" << "triggered";
 
-    if (m_focus_chain.empty()) return {};
+    if (m_focus_chain.empty()) {
+        m_current_index = -1;
+        return nullptr;
+    }
+
     if (m_current_index == (m_focus_chain.size() - 1)) {
         m_current_index = 0;
     } else {
@@ -169,7 +174,7 @@ void FocusController::reload()
 {
     qDebug() << "reload" << "triggered";
 
-    m_current_index = 0;
+    m_current_index = -1;
     m_focus_chain.clear();
 
     const auto rootObjects = m_engine->rootObjects();
@@ -177,6 +182,26 @@ void FocusController::reload()
         m_focus_chain.append(getChain(object));
     }
     std::sort(m_focus_chain.begin(), m_focus_chain.end(), isLess);
-    qDebug() << "Focus Chain";
+
+    qDebug() << "===>> Focus Chain:";
     printItems(m_focus_chain);
 }
+
+// qsizetype FocusController::indexOfFocusedItem(QObject* item) const
+// {
+//     return m_focus_chain.indexOf(item);
+// }
+/*
+    reload();
+    if(m_focus_chain.empty()) {
+        return {};
+    }
+
+    for (int i = 0; i < m_focus_chain.size(); i++) {
+        if (m_current_focused_item == m_focus_chain[i]) {
+            m_current_index = i;
+            break;
+        }
+    }
+    if(m_current_focused_item)
+*/
